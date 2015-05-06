@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp" >
+ 
+		<TextView
+        android:id="@+id/cuuid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="25dp"/>
+
+		<TextView
+        android:id="@+id/cname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="25dp"/>
+ 
+     <ImageView
+     android:id="@+id/notification"
+     android:layout_width="wrap_content"
+     android:layout_height="wrap_content"
+     android:layout_below="@+id/cuuid"
+     android:layout_toLeftOf="@+id/uparrow"
+     android:src="@drawable/notification64"
+     android:contentDescription="@string/app_name"/>
+    
+     <ImageView
+     android:id="@+id/uparrow"
+     android:layout_width="wrap_content"
+     android:layout_height="wrap_content"
+     android:layout_toLeftOf="@+id/downarrow"
+     android:layout_below="@+id/cuuid"
+     android:src="@drawable/uparrow64"
+     android:contentDescription="@string/app_name"/>
+
+     <ImageView
+      android:id="@+id/downarrow"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_alignParentRight="true"
+      android:layout_below="@+id/cuuid"
+      android:contentDescription="@string/app_name"
+      android:src="@drawable/downarrow64" />
+ 
+</RelativeLayout>
