@@ -78,7 +78,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
              
         	public void onClick(View v) {
         		Log.i(TAG,"downarrow click here");
-        		DevCon.CharacteristicWRN(groupPosition, childPosition, 0);
+        		DevCon.CharacteristicWRN(groupPosition, childPosition, childPosition, "0");
         	}
         });
         
@@ -87,7 +87,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 	
         	public void onClick(View v) {
         		Log.i(TAG,"uparrow click here value = "+ChildUUID);
-        		DevCon.CharacteristicWRN(groupPosition, childPosition, 1);
+        		DevCon.CharacteristicWRN(groupPosition, childPosition, 1, ChildName);
             }
              
     	 });
@@ -97,7 +97,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 	
         	public void onClick(View v) {
         		Log.i(TAG,"noti click here value = "+ChildUUID);
-        		DevCon.CharacteristicWRN(groupPosition, childPosition, 2);
+        		DevCon.CharacteristicWRN(groupPosition, childPosition, 2, ChildName);
             }
              
     	 });

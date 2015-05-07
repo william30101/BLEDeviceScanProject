@@ -42,6 +42,8 @@ public final class R {
     }
     public static final class id {
         public static final int cname=0x7f080001;
+        public static final int connect_status=0x7f08000e;
+        public static final int connectbtn=0x7f08000f;
         public static final int connection_state=0x7f080008;
         public static final int cuuid=0x7f080000;
         public static final int data_value=0x7f080009;
@@ -51,11 +53,11 @@ public final class R {
         public static final int gatt_services_list=0x7f08000a;
         public static final int gname=0x7f08000b;
         public static final int guuid=0x7f08000c;
-        public static final int menu_connect=0x7f08000f;
-        public static final int menu_disconnect=0x7f080010;
-        public static final int menu_refresh=0x7f08000e;
-        public static final int menu_scan=0x7f080011;
-        public static final int menu_stop=0x7f080012;
+        public static final int menu_connect=0x7f080011;
+        public static final int menu_disconnect=0x7f080012;
+        public static final int menu_refresh=0x7f080010;
+        public static final int menu_scan=0x7f080013;
+        public static final int menu_stop=0x7f080014;
         public static final int notification=0x7f080002;
         public static final int start_service=0x7f080005;
         public static final int stop_service=0x7f080006;
