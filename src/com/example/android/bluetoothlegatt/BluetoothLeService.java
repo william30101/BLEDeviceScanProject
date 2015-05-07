@@ -56,16 +56,29 @@ public class BluetoothLeService extends Service {
     private static final int STATE_CONNECTING = 1;
     private static final int STATE_CONNECTED = 2;
 
-    public final static String ACTION_GATT_CONNECTED =
-            "com.example.bluetooth.le.ACTION_GATT_CONNECTED";
-    public final static String ACTION_GATT_DISCONNECTED =
-            "com.example.bluetooth.le.ACTION_GATT_DISCONNECTED";
-    public final static String ACTION_GATT_SERVICES_DISCOVERED =
-            "com.example.bluetooth.le.ACTION_GATT_SERVICES_DISCOVERED";
-    public final static String ACTION_DATA_AVAILABLE =
-            "com.example.bluetooth.le.ACTION_DATA_AVAILABLE";
-    public final static String EXTRA_DATA =
-            "com.example.bluetooth.le.EXTRA_DATA";
+    public final static String ACTION_GATT_CONNECTEDHTC =
+            "com.example.bluetooth.le.ACTION_GATT_CONNECTEDHTC";
+    public final static String ACTION_GATT_DISCONNECTEDHTC =
+            "com.example.bluetooth.le.ACTION_GATT_DISCONNECTEDHTC";
+    public final static String ACTION_GATT_SERVICES_DISCOVEREDHTC =
+            "com.example.bluetooth.le.ACTION_GATT_SERVICES_DISCOVEREDHTC";
+    public final static String ACTION_DATA_AVAILABLEHTC =
+            "com.example.bluetooth.le.ACTION_DATA_AVAILABLEHTC";
+    public final static String EXTRA_DATAHTC =
+            "com.example.bluetooth.le.EXTRA_DATAHTC";
+    
+    
+    public final static String ACTION_GATT_CONNECTEDLED =
+            "com.example.bluetooth.le.ACTION_GATT_CONNECTEDLED";
+    public final static String ACTION_GATT_DISCONNECTEDLED =
+            "com.example.bluetooth.le.ACTION_GATT_DISCONNECTEDLED";
+    public final static String ACTION_GATT_SERVICES_DISCOVEREDLED =
+            "com.example.bluetooth.le.ACTION_GATT_SERVICES_DISCOVEREDLED";
+    public final static String ACTION_DATA_AVAILABLELED =
+            "com.example.bluetooth.le.ACTION_DATA_AVAILABLELED";
+    public final static String EXTRA_DATALED =
+            "com.example.bluetooth.le.EXTRA_DATALED";
+    
 
     public final static UUID UUID_HEART_RATE_MEASUREMENT =
             UUID.fromString(SampleGattAttributes.HEART_RATE_MEASUREMENT);
@@ -78,7 +91,7 @@ public class BluetoothLeService extends Service {
             String intentAction;
             Log.i(TAG,"mGattCallbackLED newState =" + newState);
             if (newState == BluetoothProfile.STATE_CONNECTED) {
-                intentAction = ACTION_GATT_CONNECTED;
+                intentAction = ACTION_GATT_CONNECTEDLED;
                 mConnectionState = STATE_CONNECTED;
                 broadcastUpdate(intentAction);
                 Log.i(TAG, "LED Connected to GATT server.");
@@ -87,7 +100,7 @@ public class BluetoothLeService extends Service {
                         mBluetoothGatt.discoverServices());
 
             } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
-                intentAction = ACTION_GATT_DISCONNECTED;
+                intentAction = ACTION_GATT_DISCONNECTEDLED;
                 mConnectionState = STATE_DISCONNECTED;
                 Log.i(TAG, "LED Disconnected from GATT server.");
                 broadcastUpdate(intentAction);
@@ -97,7 +110,7 @@ public class BluetoothLeService extends Service {
         @Override
         public void onServicesDiscovered(BluetoothGatt gatt, int status) {
             if (status == BluetoothGatt.GATT_SUCCESS) {
-                broadcastUpdate(ACTION_GATT_SERVICES_DISCOVERED);
+                broadcastUpdate(ACTION_GATT_SERVICES_DISCOVEREDLED);
             } else {
                 Log.w(TAG, "LED onServicesDiscovered received: " + status);
             }
@@ -109,7 +122,7 @@ public class BluetoothLeService extends Service {
                                          int status) {
         	Log.i(TAG,"LED onCharacteristicRead");
             if (status == BluetoothGatt.GATT_SUCCESS) {
-                broadcastUpdate(ACTION_DATA_AVAILABLE, characteristic);
+                broadcastUpdate(ACTION_DATA_AVAILABLELED, characteristic);
             }
         }
 
@@ -120,7 +133,7 @@ public class BluetoothLeService extends Service {
         {
         	Log.i(TAG,"LED onCharacteristicWrite");
         	if (status == BluetoothGatt.GATT_SUCCESS) {
-                broadcastUpdate(ACTION_DATA_AVAILABLE, characteristic);
+                broadcastUpdate(ACTION_DATA_AVAILABLELED, characteristic);
             }
         }
         
@@ -128,7 +141,7 @@ public class BluetoothLeService extends Service {
         public void onCharacteristicChanged(BluetoothGatt gatt,
                                             BluetoothGattCharacteristic characteristic) {
             Log.i(TAG,"LED onCharacteristicChanged");
-        	broadcastUpdate(ACTION_DATA_AVAILABLE, characteristic);
+        	broadcastUpdate(ACTION_DATA_AVAILABLELED, characteristic);
         }
     };
     
@@ -141,7 +154,7 @@ public class BluetoothLeService extends Service {
             String intentAction;
             Log.i(TAG,"mGattCallbackHTC newState =" + newState);
             if (newState == BluetoothProfile.STATE_CONNECTED) {
-                intentAction = ACTION_GATT_CONNECTED;
+                intentAction = ACTION_GATT_CONNECTEDHTC;
                 mConnectionState = STATE_CONNECTED;
                 broadcastUpdate(intentAction);
                 Log.i(TAG, "HTC Connected to GATT server.");
@@ -150,7 +163,7 @@ public class BluetoothLeService extends Service {
                         mBluetoothGatt.discoverServices());
 
             } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
-                intentAction = ACTION_GATT_DISCONNECTED;
+                intentAction = ACTION_GATT_DISCONNECTEDHTC;
                 mConnectionState = STATE_DISCONNECTED;
                 Log.i(TAG, "HTC Disconnected from GATT server.");
                 broadcastUpdate(intentAction);
@@ -160,7 +173,7 @@ public class BluetoothLeService extends Service {
         @Override
         public void onServicesDiscovered(BluetoothGatt gatt, int status) {
             if (status == BluetoothGatt.GATT_SUCCESS) {
-                broadcastUpdate(ACTION_GATT_SERVICES_DISCOVERED);
+                broadcastUpdate(ACTION_GATT_SERVICES_DISCOVEREDHTC);
             } else {
                 Log.w(TAG, "HTC onServicesDiscovered received: " + status);
             }
@@ -172,7 +185,7 @@ public class BluetoothLeService extends Service {
                                          int status) {
         	Log.i(TAG,"HTC onCharacteristicRead");
             if (status == BluetoothGatt.GATT_SUCCESS) {
-                broadcastUpdate(ACTION_DATA_AVAILABLE, characteristic);
+                broadcastUpdate(ACTION_DATA_AVAILABLEHTC, characteristic);
             }
         }
 
@@ -183,7 +196,7 @@ public class BluetoothLeService extends Service {
         {
         	Log.i(TAG,"HTC onCharacteristicWrite");
         	if (status == BluetoothGatt.GATT_SUCCESS) {
-                broadcastUpdate(ACTION_DATA_AVAILABLE, characteristic);
+                broadcastUpdate(ACTION_DATA_AVAILABLEHTC, characteristic);
             }
         }
         
@@ -191,7 +204,7 @@ public class BluetoothLeService extends Service {
         public void onCharacteristicChanged(BluetoothGatt gatt,
                                             BluetoothGattCharacteristic characteristic) {
             Log.i(TAG,"HTC onCharacteristicChanged");
-        	broadcastUpdate(ACTION_DATA_AVAILABLE, characteristic);
+        	broadcastUpdate(ACTION_DATA_AVAILABLEHTC, characteristic);
         }
     };
 
@@ -235,7 +248,7 @@ public class BluetoothLeService extends Service {
             }
             final int heartRate = characteristic.getIntValue(format, 1);
             Log.d(TAG, String.format("Received heart rate: %d", heartRate));
-            intent.putExtra(EXTRA_DATA, String.valueOf(heartRate));
+            intent.putExtra(EXTRA_DATAHTC, String.valueOf(heartRate));
         } else {
             // For all other profiles, writes the data formatted in HEX.
             final byte[] data = characteristic.getValue();
@@ -246,7 +259,7 @@ public class BluetoothLeService extends Service {
                 	Log.i("william","data="+byteChar);
                     stringBuilder.append(String.format("%02X ", byteChar));
                 }
-                intent.putExtra(EXTRA_DATA, new String(data) + "\n" + stringBuilder.toString());
+                intent.putExtra(EXTRA_DATAHTC, new String(data) + "\n" + stringBuilder.toString());
             }
         }
         sendBroadcast(intent);

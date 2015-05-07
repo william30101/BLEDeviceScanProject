@@ -26,6 +26,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -47,7 +48,7 @@ public class DeviceScanActivity extends ListActivity {
     private boolean mScanning;
     private Handler mHandler;
     private static ArrayList <BluetoothDevice> connectedDevice = new ArrayList <BluetoothDevice>();
-
+    private final static String TAG = "william";
    
     private Activity BLEActivity;
     
@@ -169,21 +170,19 @@ public class DeviceScanActivity extends ListActivity {
         //startActivity(intent);
         
       //William Added , for connect multiple device
- //       if (position == 0)
- //       {
-        	View childV = l.getChildAt(position);
-        	connection_status = (TextView)childV.findViewById(R.id.connect_status);
-        	DeviceControl = new DeviceControlActivity();
-        	//DevCon.startDeviceControl( globalActivity,v ,device.getName(),device.getAddress());
-        	DeviceControl.DeviceControlStart(BLEActivity,device,connection_status);
-        
-//        }
-//        else if (position == 1)
-//        {
-//	        DeviceControl2 = new DeviceControlActivity2();
-//	        //DevCon.startDeviceControl( globalActivity,v ,device.getName(),device.getAddress());
-//	        DeviceControl2.DeviceControlStart(BLEActivity,device);
-//        }
+    	View childView = l.getChildAt(position);
+    	connection_status = (TextView)childView.findViewById(R.id.connect_status);
+    	DeviceControl = new DeviceControlActivity();
+    	//DevCon.startDeviceControl( globalActivity,v ,device.getName(),device.getAddress());
+    	//First Touch => connect , Second touch => disconnect
+    	
+    	Log.i(TAG,"listitemclick " + device.getName());
+    	
+    	if (connection_status.getText().toString().contains("disconnect"))
+    		DeviceControl.DeviceControlStart(BLEActivity,device,connection_status);
+    	else
+    		DeviceControl.disconnectBLEDevice();
+
 
   }
 
