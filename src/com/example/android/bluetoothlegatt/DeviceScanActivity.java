@@ -181,7 +181,8 @@ public class DeviceScanActivity extends ListActivity {
     	if (connection_status.getText().toString().contains("disconnect"))
     		DeviceControl.DeviceControlStart(BLEActivity,device,connection_status);
     	else
-    		DeviceControl.disconnectBLEDevice();
+    		DeviceControl.CharacteristicWRN(2, 0, 2, "0");
+    		//DeviceControl.disconnectBLEDevice();
 
 
   }

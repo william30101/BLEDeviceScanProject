@@ -39,6 +39,8 @@ public class SampleGattAttributes {
         attributes.put("00002a29-0000-1000-8000-00805f9b34fb", "Manufacturer Name String");
         
         attributes.put(Alert_level, "Alert Level");
+        
+        attributes.put("00002a70-0000-1000-8000-00805f9b34fb", "Keyboard Notify");
     }
 
     public static String lookup(String uuid, String defaultName) {

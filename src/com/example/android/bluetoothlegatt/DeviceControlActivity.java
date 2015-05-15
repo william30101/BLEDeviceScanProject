@@ -91,9 +91,14 @@ public class DeviceControlActivity{
     
     private Activity BLEDeviceConActivity;
     private DeviceControlActivity BLEDeviceControl;
-
+    private static int connectedDeviceNum = 0; 
+    private static HashMap<String, String> deviceMapping = new HashMap();
     
-    ExpandableListView expListView;
+    public static HashMap<String, String> getDeviceMapping() {
+		return deviceMapping;
+	}
+
+	ExpandableListView expListView;
     //ArrayList<HashMap<String, String>> groupList;
     List<String> childList;
     //Map<String, List<String>> laptopCollection;
@@ -156,17 +161,17 @@ public class DeviceControlActivity{
     // ACTION_GATT_SERVICES_DISCOVERED: discovered GATT services.
     // ACTION_DATA_AVAILABLE: received data from the device.  This can be a result of read
     //                        or notification operations.
-    private final BroadcastReceiver mGattUpdateReceiverHTC = new BroadcastReceiver() {
+    private final BroadcastReceiver mGattUpdateReceiverA = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
         	
             final String action = intent.getAction();
             
-            Log.i(TAG,"HTC onReceive here action = "+action);
+            Log.i(TAG,"A onReceive here action = "+action);
             
-            if (BluetoothLeService.ACTION_GATT_CONNECTEDHTC.equals(action)) {
+            if (BluetoothLeService.ACTION_GATT_CONNECTEDA.equals(action)) {
                 mConnected = true;
-                Log.i(TAG,"HTC BLE connected");
+                Log.i(TAG,"A BLE connected");
                 mConnectionState.setText("connected " + gBleDevice.getName());
                 DeviceScanActivity.setConnectedDevice(gBleDevice);
                 //mBluetoothLeService.getBledeviceBond();
@@ -175,15 +180,54 @@ public class DeviceControlActivity{
                // ScreenDirection.BLEStatusHandler.sendMessage(msg1);
 
                 //invalidateOptionsMenu();
-            } else if (BluetoothLeService.ACTION_GATT_DISCONNECTEDHTC.equals(action)) {
+            } else if (BluetoothLeService.ACTION_GATT_DISCONNECTEDA.equals(action)) {
                 mConnected = false;
+                Log.i(TAG,"A BLE disconnected");
                 mConnectionState.setText("disconnect");
+                deviceMapping.put("A", null);
                 //invalidateOptionsMenu();
                 //clearUI();
-            } else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVEREDHTC.equals(action)) {
+            } else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVEREDA.equals(action)) {
                 // Show all the supported services and characteristics on the user interface.
                 displayGattServices(mBluetoothLeService.getSupportedGattServices());
-            } else if (BluetoothLeService.ACTION_DATA_AVAILABLEHTC.equals(action)) {
+            } else if (BluetoothLeService.ACTION_DATA_AVAILABLEA.equals(action)) {
+                                
+                //dispatchKeyEvent(new KeyEvent (KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_VOLUME_UP));
+            }
+        }
+    };
+    
+    
+    private final BroadcastReceiver mGattUpdateReceiverB = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+        	
+            final String action = intent.getAction();
+            
+            Log.i(TAG,"B onReceive here action = "+action);
+            
+            if (BluetoothLeService.ACTION_GATT_CONNECTEDB.equals(action)) {
+                mConnected = true;
+                Log.i(TAG,"B BLE connected");
+                mConnectionState.setText("connected " + gBleDevice.getName());
+                DeviceScanActivity.setConnectedDevice(gBleDevice);
+                //mBluetoothLeService.getBledeviceBond();
+                
+                //Message msg1 = ScreenDirection.BLEStatusHandler.obtainMessage(1, "BLE connected");
+               // ScreenDirection.BLEStatusHandler.sendMessage(msg1);
+
+                //invalidateOptionsMenu();
+            } else if (BluetoothLeService.ACTION_GATT_DISCONNECTEDB.equals(action)) {
+            	Log.i(TAG,"B BLE disconnected");
+                mConnected = false;
+                mConnectionState.setText("disconnect");
+                deviceMapping.put("B", null);
+                //invalidateOptionsMenu();
+                //clearUI();
+            } else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVEREDB.equals(action)) {
+                // Show all the supported services and characteristics on the user interface.
+                displayGattServices(mBluetoothLeService.getSupportedGattServices());
+            } else if (BluetoothLeService.ACTION_DATA_AVAILABLEB.equals(action)) {
                                 
                 //dispatchKeyEvent(new KeyEvent (KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_VOLUME_UP));
             }
@@ -191,23 +235,17 @@ public class DeviceControlActivity{
     };
 
     
- // Handles various events fired by the Service.
-    // ACTION_GATT_CONNECTED: connected to a GATT server.
-    // ACTION_GATT_DISCONNECTED: disconnected from a GATT server.
-    // ACTION_GATT_SERVICES_DISCOVERED: discovered GATT services.
-    // ACTION_DATA_AVAILABLE: received data from the device.  This can be a result of read
-    //                        or notification operations.
-    private final BroadcastReceiver mGattUpdateReceiverLED = new BroadcastReceiver() {
+    private final BroadcastReceiver mGattUpdateReceiverC = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
         	
             final String action = intent.getAction();
             
-            Log.i(TAG,"LED onReceive here action = "+action);
+            Log.i(TAG,"C onReceive here action = "+action);
             
-            if (BluetoothLeService.ACTION_GATT_CONNECTEDLED.equals(action)) {
+            if (BluetoothLeService.ACTION_GATT_CONNECTEDC.equals(action)) {
                 mConnected = true;
-                Log.i(TAG,"LED BLE connected");
+                Log.i(TAG,"C BLE connected");
                 mConnectionState.setText("connected " + gBleDevice.getName());
                 DeviceScanActivity.setConnectedDevice(gBleDevice);
                 //mBluetoothLeService.getBledeviceBond();
@@ -216,20 +254,23 @@ public class DeviceControlActivity{
                // ScreenDirection.BLEStatusHandler.sendMessage(msg1);
 
                 //invalidateOptionsMenu();
-            } else if (BluetoothLeService.ACTION_GATT_DISCONNECTEDLED.equals(action)) {
+            } else if (BluetoothLeService.ACTION_GATT_DISCONNECTEDC.equals(action)) {
                 mConnected = false;
+                Log.i(TAG,"C BLE disconnected");
                 mConnectionState.setText("disconnect");
+                deviceMapping.put("C", null);
                 //invalidateOptionsMenu();
                 //clearUI();
-            } else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVEREDLED.equals(action)) {
+            } else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVEREDC.equals(action)) {
                 // Show all the supported services and characteristics on the user interface.
                 displayGattServices(mBluetoothLeService.getSupportedGattServices());
-            } else if (BluetoothLeService.ACTION_DATA_AVAILABLELED.equals(action)) {
+            } else if (BluetoothLeService.ACTION_DATA_AVAILABLEC.equals(action)) {
                                 
                 //dispatchKeyEvent(new KeyEvent (KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_VOLUME_UP));
             }
         }
     };
+
     
     /*
     @Override
@@ -364,10 +405,31 @@ public class DeviceControlActivity{
     	 mDeviceAddress = device.getAddress();
     	 Log.i(TAG,"device name is " +mDeviceName );
     	 
-    	 if (device.getName().equalsIgnoreCase("HTC Fetch"))
-    		 v.registerReceiver(mGattUpdateReceiverHTC, makeGattUpdateIntentFilterHTC());
-    	 else if (device.getName().equalsIgnoreCase("LedButtonDemo"))
-    		 v.registerReceiver(mGattUpdateReceiverLED, makeGattUpdateIntentFilterLED());
+//    	 if (device.getName().equalsIgnoreCase("HTC Fetch"))
+//    		 v.registerReceiver(mGattUpdateReceiverHTC, makeGattUpdateIntentFilterHTC());
+//    	 else if (device.getName().equalsIgnoreCase("LedButtonDemo"))
+//    		 v.registerReceiver(mGattUpdateReceiverLED, makeGattUpdateIntentFilterLED());
+    	 
+    	 if (deviceMapping.get("A") == null)
+    	 {
+    		 deviceMapping.put("A", mDeviceName);
+    		 v.registerReceiver(mGattUpdateReceiverA, makeGattUpdateIntentFilterA());
+    		 connectedDeviceNum++;
+    	 }
+    	 else if (deviceMapping.get("B") == null)
+    	 {
+    		 deviceMapping.put("B", mDeviceName);
+    		 v.registerReceiver(mGattUpdateReceiverB, makeGattUpdateIntentFilterB());
+    		 connectedDeviceNum++;
+    	 }
+    	 else if (deviceMapping.get("C") == null )
+    	 {
+    		 deviceMapping.put("C", mDeviceName);
+    		 v.registerReceiver(mGattUpdateReceiverC, makeGattUpdateIntentFilterC());
+    		 connectedDeviceNum++;
+    	 }
+    	 else 
+    		 Log.i(TAG,"Only have 3 connected device be used here");
 
          // Sets up UI references.
        //  ((TextView) findViewById(R.id.device_address)).setText(mDeviceAddress);
@@ -554,21 +616,33 @@ public class DeviceControlActivity{
 
     }
 
-    private static IntentFilter makeGattUpdateIntentFilterLED() {
+    
+    // For most 3 devices connected.
+    
+    private static IntentFilter makeGattUpdateIntentFilterA() {
         final IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(BluetoothLeService.ACTION_GATT_CONNECTEDLED);
-        intentFilter.addAction(BluetoothLeService.ACTION_GATT_DISCONNECTEDLED);
-        intentFilter.addAction(BluetoothLeService.ACTION_GATT_SERVICES_DISCOVEREDLED);
-        intentFilter.addAction(BluetoothLeService.ACTION_DATA_AVAILABLELED);
+        intentFilter.addAction(BluetoothLeService.ACTION_GATT_CONNECTEDA);
+        intentFilter.addAction(BluetoothLeService.ACTION_GATT_DISCONNECTEDA);
+        intentFilter.addAction(BluetoothLeService.ACTION_GATT_SERVICES_DISCOVEREDA);
+        intentFilter.addAction(BluetoothLeService.ACTION_DATA_AVAILABLEA);
         return intentFilter;
     }
 
-    private static IntentFilter makeGattUpdateIntentFilterHTC() {
+    private static IntentFilter makeGattUpdateIntentFilterB() {
         final IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(BluetoothLeService.ACTION_GATT_CONNECTEDHTC);
-        intentFilter.addAction(BluetoothLeService.ACTION_GATT_DISCONNECTEDHTC);
-        intentFilter.addAction(BluetoothLeService.ACTION_GATT_SERVICES_DISCOVEREDHTC);
-        intentFilter.addAction(BluetoothLeService.ACTION_DATA_AVAILABLEHTC);
+        intentFilter.addAction(BluetoothLeService.ACTION_GATT_CONNECTEDB);
+        intentFilter.addAction(BluetoothLeService.ACTION_GATT_DISCONNECTEDB);
+        intentFilter.addAction(BluetoothLeService.ACTION_GATT_SERVICES_DISCOVEREDB);
+        intentFilter.addAction(BluetoothLeService.ACTION_DATA_AVAILABLEB);
+        return intentFilter;
+    }
+    
+    private static IntentFilter makeGattUpdateIntentFilterC() {
+        final IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(BluetoothLeService.ACTION_GATT_CONNECTEDC);
+        intentFilter.addAction(BluetoothLeService.ACTION_GATT_DISCONNECTEDC);
+        intentFilter.addAction(BluetoothLeService.ACTION_GATT_SERVICES_DISCOVEREDC);
+        intentFilter.addAction(BluetoothLeService.ACTION_DATA_AVAILABLEC);
         return intentFilter;
     }
     
